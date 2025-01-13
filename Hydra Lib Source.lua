@@ -5,7 +5,8 @@ local function getObjGen()
     local objGen = {}
 
     local function getObjects()
-        local function initObj()
+        local Gui = {}
+        function initObj()
             local Gui = {
                 UIObjects = Instance.new("Folder"),
                 Cheats = Instance.new("Folder"),
@@ -2505,41 +2506,17 @@ local function getObjGen()
             return Gui.UIObjects
         end
 
-        return initObj()
+        initObj()
+        return Gui  -- Return the entire Gui table
     end
 
-    local UIObjects = getObjects()
-    UIObjects.Parent = script
+    local Gui = getObjects()
+    Gui.Parent = script
 
     local uiElements = {}
-    -- Instead of using UIObjects, store in table
+    -- Now Gui is accessible here
     for name, element in pairs(Gui) do
         uiElements[name] = element
-    end
-
-    -- Parent the elements
-    for _, element in pairs(uiElements) do
-        if element.Parent then
-            element.Parent = element.Parent.Parent
-        end
-    end
-
-    script.UIObjects:Destroy()
-
-    function objGen.new(objectType, cheatName)
-        if objectType == "Cheat" then
-            if script.Cheats:FindFirstChild(cheatName) then
-                return script.Cheats[cheatName]:Clone()
-            else
-                error("Invalid cheatType")
-            end
-        end
-
-        if script.Objects:FindFirstChild(objectType) then
-            return script.Objects[objectType]:Clone()
-        else
-            error("Invalid objectType")
-        end
     end
 
     return objGen
